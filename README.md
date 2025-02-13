@@ -13,6 +13,7 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - 📅 **Organización de Sesiones**: Creación y seguimiento de eventos
 - 👥 **Sistema de Confirmación**: Gestión de asistencia mediante reacciones
 - 🧹 **Auto-limpieza**: Eliminación automática de sesiones antiguas
+- 🔄 **Actualización Periódica**: Actualización automática de las tarjetas de sesión con el tiempo restante
 
 ## 🛠️ Comandos Disponibles
 
@@ -37,6 +38,9 @@ El bot monitorea constantemente las sesiones programadas y envía notificaciones
 - ✅ Confirmación de asistencia
 - ❌ Marcado de ausencia
 - 📊 Seguimiento en tiempo real
+
+### Actualización Periódica de Tarjetas
+El bot actualiza automáticamente las tarjetas de sesión en Discord para mostrar el tiempo restante hasta el inicio de la sesión, incluso si no hay reacciones de los usuarios.
 
 ## 🚀 Instalación
 
