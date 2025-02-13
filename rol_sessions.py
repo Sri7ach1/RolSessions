@@ -41,16 +41,24 @@ def setup_files():
 
 # Funciones auxiliares
 def load_config(guild_id):
-   with open('config/config.json', 'r') as f:
-       configs = json.load(f)
-   return configs.get(str(guild_id), configs['default'])
+   try:
+       with open('config/config.json', 'r') as f:
+           configs = json.load(f)
+       return configs.get(str(guild_id), configs['default'])
+   except FileNotFoundError:
+       return {"prevtime": DEFAULT_ALERT_TIME, "timezone": DEFAULT_TIMEZONE, "lang": "es"}
 
 def save_config(guild_id, config_data):
-   with open('config/config.json', 'r') as f:
-       configs = json.load(f)
-   configs[str(guild_id)] = config_data
-   with open('config/config.json', 'w') as f:
-       json.dump(configs, f, indent=4)
+   try:
+       with open('config/config.json', 'r') as f:
+           configs = json.load(f)
+       configs[str(guild_id)] = config_data
+       with open('config/config.json', 'w') as f:
+           json.dump(configs, f, indent=4)
+   except FileNotFoundError:
+       configs = {str(guild_id): config_data}
+       with open('config/config.json', 'w') as f:
+           json.dump(configs, f, indent=4)
 
 def get_text(key, guild_id, *args):
    config = load_config(guild_id)
@@ -375,7 +383,50 @@ async def check_sessions():
        except Exception as e:
            print(f"Error procesando sesión {session.get('name', 'unknown')}: {str(e)}")
            continue
-# Manejo de reacciones
+
+@tasks.loop(minutes=1)
+async def update_session_embeds():
+   current_time = datetime.now()
+   sessions = load_sessions()
+   
+   for session in sessions:
+       try:
+           # Obtener el servidor correcto
+           guild = bot.get_guild(int(session['guild_id']))
+           if guild:
+               channel = guild.get_channel(int(session['channel']))
+               if channel:
+                   # Buscar el mensaje de la sesión
+                   async for message in channel.history(limit=100):
+                       if message.embeds and message.embeds[0].title.startswith(get_text('session_alert_title', session['guild_id'])):
+                           session_name = message.embeds[0].title.split(': ')[1]
+                           if session_name == session['name']:
+                               # Calcular diferencia de tiempo
+                               session_time = datetime.strptime(session['datetime'], "%d-%m-%Y %H:%M")
+                               server_config = load_config(session['guild_id'])
+                               server_timezone = server_config.get('timezone', DEFAULT_TIMEZONE)
+                               time_diff = calculate_time_difference(session_time, server_timezone)
+                               
+                               # Obtener el rol para el mensaje actualizado
+                               role = guild.get_role(int(session['group']))
+                               role_name = role.name if role else session['group']
+                               
+                               embed = discord.Embed(
+                                   title=message.embeds[0].title,
+                                   description=f"{get_text('session_alert_in_minutes', session['guild_id'], int(time_diff))}\n"
+                                              f"{get_text('active_sessions_group', message.guild.id)} {role_name}\n\n"
+                                              f"{get_text('session_ready', message.guild.id)}\n"
+                                              f"{', '.join([f'<@{user_id}>' for user_id in session['status']['ready']]) if session['status']['ready'] else 'Ninguno'}\n\n"
+                                              f"{get_text('session_not_ready', message.guild.id)}\n"
+                                              f"{', '.join([f'<@{user_id}>' for user_id in session['status']['not_ready']]) if session['status']['not_ready'] else 'Ninguno'}",
+                                   color=discord.Color.gold()
+                               )
+                               await message.edit(embed=embed)
+                               break
+       except Exception as e:
+           print(f"Error actualizando sesión {session.get('name', 'unknown')}: {str(e)}")
+           continue
+
 @bot.event
 async def on_reaction_add(reaction, user):
    if user == bot.user:
@@ -427,10 +478,17 @@ async def on_reaction_add(reaction, user):
    # Obtener el rol para el mensaje actualizado
    role = message.guild.get_role(int(session['group']))
    role_name = role.name if role else session['group']
+
+   # Calcular diferencia de tiempo
+   session_time = datetime.strptime(session['datetime'], "%d-%m-%Y %H:%M")
+   server_config = load_config(session['guild_id'])
+   server_timezone = server_config.get('timezone', DEFAULT_TIMEZONE)
+   time_diff = calculate_time_difference(session_time, server_timezone)
    
    embed = discord.Embed(
        title=message.embeds[0].title,
-       description=f"{get_text('active_sessions_group', message.guild.id)} {role_name}\n\n"
+       description=f"{get_text('session_alert_in_minutes', session['guild_id'], int(time_diff))}\n"
+                  f"{get_text('active_sessions_group', message.guild.id)} {role_name}\n\n"
                   f"{get_text('session_ready', message.guild.id)}\n"
                   f"{', '.join([f'<@{user_id}>' for user_id in session['status']['ready']]) if session['status']['ready'] else 'Ninguno'}\n\n"
                   f"{get_text('session_not_ready', message.guild.id)}\n"
@@ -471,10 +529,17 @@ async def on_reaction_remove(reaction, user):
    # Obtener el rol para el mensaje actualizado
    role = message.guild.get_role(int(session['group']))
    role_name = role.name if role else session['group']
+
+   # Calcular diferencia de tiempo
+   session_time = datetime.strptime(session['datetime'], "%d-%m-%Y %H:%M")
+   server_config = load_config(session['guild_id'])
+   server_timezone = server_config.get('timezone', DEFAULT_TIMEZONE)
+   time_diff = calculate_time_difference(session_time, server_timezone)
    
    embed = discord.Embed(
        title=message.embeds[0].title,
-       description=f"{get_text('active_sessions_group', message.guild.id)} {role_name}\n\n"
+       description=f"{get_text('session_alert_in_minutes', session['guild_id'], int(time_diff))}\n"
+                  f"{get_text('active_sessions_group', message.guild.id)} {role_name}\n\n"
                   f"{get_text('session_ready', message.guild.id)}\n"
                   f"{', '.join([f'<@{user_id}>' for user_id in session['status']['ready']]) if session['status']['ready'] else 'Ninguno'}\n\n"
                   f"{get_text('session_not_ready', message.guild.id)}\n"
@@ -488,6 +553,7 @@ async def on_ready():
    print(f'Bot conectado como {bot.user.name}')
    setup_files()
    check_sessions.start()
+   update_session_embeds.start()
 
 # Ejecutar el bot
 if __name__ == "__main__":
