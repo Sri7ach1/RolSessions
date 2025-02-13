@@ -316,12 +316,15 @@ async def purgeSessions(ctx):
            with open(file_path, 'r') as f:
                session = json.load(f)
            
-           session_time = datetime.strptime(session['created_at'], "%d-%m-%Y %H:%M")
-           if (current_time - session_time) > timedelta(days=1):
-               os.remove(file_path)
-               purged += 1
+           # Verificar si la sesión pertenece al servidor actual
+           if session.get('guild_id') == ctx.guild.id:
+               session_time = datetime.strptime(session['created_at'], "%d-%m-%Y %H:%M")
+               if (current_time - session_time) > timedelta(days=1):
+                   os.remove(file_path)
+                   purged += 1
    
    await ctx.send(get_text('purge_sessions_result', ctx.guild.id, purged))
+
 # Sistema de comprobación de sesiones y envío de avisos
 @tasks.loop(minutes=1)
 async def check_sessions():
