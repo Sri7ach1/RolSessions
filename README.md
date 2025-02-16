@@ -6,57 +6,51 @@
 
 ## 🌟 Características Principales
 
-Un mayordomo digital extraordinario para la gestión de sesiones de rol y eventos en Discord, dotado de capacidades multilingües y una precisión cronométrica digna de un relojero suizo.
+Un mayordomo digital para la gestión de sesiones de rol y eventos en Discord, con soporte multilingüe y precisión cronométrica.
 
-- 🌍 **Soporte Multilingüe**: Español e Inglés, ¡tú eliges el idioma!
-- ⏰ **Gestión Temporal Avanzada**: Control preciso de zonas horarias
-- 📅 **Organización de Sesiones**: Creación y seguimiento de eventos
-- 👥 **Sistema de Confirmación**: Gestión de asistencia mediante reacciones
-- 🧹 **Auto-limpieza**: Eliminación automática de sesiones antiguas
-- 🔄 **Actualización Periódica**: Actualización automática de las tarjetas de sesión con el tiempo restante
+- 🌍 **Multilingüe**: Español e Inglés
+- ⏰ **Gestión Temporal**: Control de zonas horarias y notificaciones automáticas
+- 📅 **Sesiones**: Creación, edición y seguimiento de eventos
+- 👥 **Confirmaciones**: Sistema de asistencia mediante reacciones
+- 🔄 **Persistencia**: Base de datos SQLite y recuperación automática
+- 🧹 **Mantenimiento**: Limpieza automática de sesiones antiguas
 
-## 🛠️ Comandos Disponibles
+## 🛠️ Comandos
 
-### Configuración
-- `!configure timezone` - Configura la zona horaria del servidor
-- `!configure lang` - Establece el idioma del bot (es/en)
-
-### Gestión de Sesiones
-- `!newSession` - Crea una nueva sesión
-- `!activeSessions` - Muestra las sesiones activas
-- `!purgeSessions` - Elimina sesiones antiguas
-
-### Otros
+- `!configure timezone` - Configura zona horaria
+- `!configure lang` - Establece idioma (es/en)
+- `!newSession` - Crea sesión
+- `!activeSessions` - Lista sesiones activas
+- `!deleteSession` - Elimina sesión
+- `!editSession` - Edita sesión existente
 - `!donate` - Información sobre donaciones
 
-## 🎯 Características Destacadas
+## 🎯 Sistemas Principales
 
-### Sistema de Notificaciones Inteligente
-El bot monitorea constantemente las sesiones programadas y envía notificaciones automáticas con una hora de antelación, permitiendo a los participantes confirmar su asistencia mediante reacciones.
+### Base de Datos y Persistencia
+- 💾 Almacenamiento SQLite
+- 🔄 Recuperación tras reinicios
+- 🔒 Integridad de datos
+- 📊 Gestión de sesiones múltiples
 
-### Gestión de Estado de Participantes
-- ✅ Confirmación de asistencia
-- ❌ Marcado de ausencia
-- 📊 Seguimiento en tiempo real
+### Gestión de Sesiones
+- 📝 Interfaz guiada
+- ✨ Menciones de canal
+- 🔍 Validación de entradas
+- ✅ Confirmación en dos pasos
 
-### Actualización Periódica de Tarjetas
-El bot actualiza automáticamente las tarjetas de sesión en Discord para mostrar el tiempo restante hasta el inicio de la sesión, incluso si no hay reacciones de los usuarios.
+### Notificaciones y Estados
+- ⏰ Avisos automáticos
+- 🔔 Menciones configurables
+- 📊 Estado en tiempo real
+- 🔄 Actualización automática
 
-## 🚀 Instalación
+## 🚀 Inicio Rápido
 
-1. Invita al bot a tu servidor usando [este enlace](https://discord.com/oauth2/authorize?client_id=1313118498133905439)
-2. Configura la zona horaria de tu servidor: `!configure timezone`
-3. Establece tu idioma preferido: `!configure lang`
-4. ¡Listo para crear tu primera sesión!
-
-## ⚙️ Configuración del Bot
-
-Para un funcionamiento óptimo, asegúrate de configurar:
-
-- Zona horaria del servidor
-- Idioma preferido (es/en)
-- Canales de notificación
-- Roles de acceso
+1. [Invitar bot](https://discord.com/oauth2/authorize?client_id=1313118498133905439)
+2. `!configure timezone`
+3. `!configure lang`
+4. `!newSession`
 
 ## 📜 Licencia
 
@@ -69,6 +63,13 @@ Si encuentras útil este bot, considera [hacer una donación](https://paypal.me/
 ## 🤝 Contribuciones
 
 Este proyecto se distribuye bajo una licencia restringida. Aunque el código es visible para revisión, no se aceptan modificaciones o redistribuciones sin autorización expresa.
+
+## 📝 Últimas Actualizaciones
+
+- ✨ Sistema de edición de sesiones
+- 🔄 Persistencia de mensajes
+- 🧹 Limpieza automática
+- ⚡ Optimización general
 
 ---
 Desarrollado con 💖 por Sri7ach1
