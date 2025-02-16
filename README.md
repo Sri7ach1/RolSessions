@@ -15,6 +15,7 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - 🔄 **Persistencia de Datos**: Sistema robusto de almacenamiento en SQLite
 - 🧹 **Auto-limpieza**: Eliminación automática de sesiones antiguas
 - 🔄 **Actualización Periódica**: Actualización automática de las tarjetas de sesión
+- 🔔 **Notificaciones**: Recordatorios automáticos antes de cada sesión
 
 ## 🛠️ Comandos Disponibles
 
@@ -23,12 +24,14 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - `!configure lang` - Establece el idioma del bot (es/en)
 
 ### Gestión de Sesiones
-- `!newSession` - Crea una nueva sesión (con interfaz mejorada)
+- `!newSession` - Crea una nueva sesión
 - `!activeSessions` - Muestra las sesiones activas
-- `!deleteSession` - Elimina una sesión con sistema de selección visual
+- `!deleteSession` - Elimina una sesión
 - `!editSession` - Edita una sesión existente
+- `!forcereset` - Fuerza el reinicio de las sesiones (solo admin)
 
 ### Otros
+- `!help` - Muestra la ayuda del bot
 - `!donate` - Información sobre donaciones
 
 ## 🎯 Características Destacadas
