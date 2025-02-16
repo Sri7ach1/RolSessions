@@ -42,7 +42,9 @@ TEXTS = {
         'session_alert_title': 'Aviso:',
         'session_alert_in_minutes': 'Sesión en {} minutos',
         'session_ready': 'Listos:',
-        'session_not_ready': 'No listos:'
+        'session_not_ready': 'No listos:',
+        'session_in_progress': '⚔️ Sesión en curso',
+        'session_ended': '🏁 Sesión finalizada',
     },
     'en': {
         'config_title': 'Bot Configuration',
@@ -86,6 +88,8 @@ TEXTS = {
         'session_alert_title': 'Alert:',
         'session_alert_in_minutes': 'Session in {} minutes',
         'session_ready': 'Ready:',
-        'session_not_ready': 'Not ready:'
+        'session_not_ready': 'Not ready:',
+        'session_in_progress': '⚔️ Session in progress',
+        'session_ended': '🏁 Session ended',
     }
 }

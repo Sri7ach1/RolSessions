@@ -1021,31 +1021,44 @@ async def send_session_notification(session, guild, channel, time_diff):
     try:
         role = guild.get_role(int(session['group']))
         role_name = role.name if role else session['group']
+        
+        # Determinar el mensaje según el tiempo transcurrido
+        if time_diff <= 0 and time_diff > -150:
+            status_message = f"{get_text('session_in_progress', session['guild_id'])}"
+            color = discord.Color.green()
+        elif time_diff <= -150:
+            status_message = f"{get_text('session_ended', session['guild_id'])}"
+            color = discord.Color.red()
+        else:
+            status_message = f"{get_text('session_alert_in_minutes', session['guild_id'], int(time_diff))}"
+            color = discord.Color.gold()
 
-        # Añadir mensaje de aviso con mención al rol
-        if role:
+        # Añadir mensaje de aviso con mención al rol solo si la sesión aún no ha comenzado
+        if time_diff > 0 and role:
             await channel.send(f"¡Hey {role.mention}! Vuestra sesión de **{session['name']}** comenzará en {int(time_diff)} minutos!")
         
         embed = discord.Embed(
             title=f"{get_text('session_alert_title', session['guild_id'])} {session['name']}",
-            description=f"{get_text('session_alert_in_minutes', session['guild_id'], int(time_diff))}\n"
+            description=f"{status_message}\n"
                       f"{get_text('active_sessions_group', session['guild_id'])} {role_name}\n\n"
                       f"{get_text('session_ready', session['guild_id'])}\n"
                       f"{', '.join([f'<@{user_id}>' for user_id in session['status']['ready']]) if session['status']['ready'] else 'Ninguno'}\n\n"
                       f"{get_text('session_not_ready', session['guild_id'])}\n"
                       f"{', '.join([f'<@{user_id}>' for user_id in session['status']['not_ready']]) if session['status']['not_ready'] else 'Ninguno'}",
-            color=discord.Color.gold()
+            color=color
         )
         
         message = await channel.send(embed=embed)
-        await message.add_reaction('✅')
-        await message.add_reaction('❌')
+        # Solo añadir reacciones si la sesión no ha finalizado
+        if time_diff > -150:
+            await message.add_reaction('✅')
+            await message.add_reaction('❌')
         
         session['notified'] = True
         SessionManager.save_session(session, str(message.id))
         
-        return message  # Devolver el mensaje creado
-        
+        return message
+
     except Exception as e:
         logger.error(f"Error en send_session_notification: {str(e)}")
         return None
@@ -1084,20 +1097,35 @@ async def update_session_embed(session, guild, channel, time_diff):
             ready_mentions = ['Ninguno'] if not ready_users else [f'<@{uid}>' for uid in ready_users]
             not_ready_mentions = ['Ninguno'] if not not_ready_users else [f'<@{uid}>' for uid in not_ready_users]
 
+            # Determinar el mensaje y color según el tiempo transcurrido
+            if time_diff <= 0 and time_diff > -150:
+                status_message = f"{get_text('session_in_progress', guild.id)}"
+                color = discord.Color.green()
+            elif time_diff <= -150:
+                status_message = f"{get_text('session_ended', guild.id)}"
+                color = discord.Color.red()
+            else:
+                status_message = f"{get_text('session_alert_in_minutes', guild.id, int(time_diff))}"
+                color = discord.Color.gold()
+
             embed = discord.Embed(
                 title=f"{get_text('session_alert_title', guild.id)} {session['name']}",
-                description=f"{get_text('session_alert_in_minutes', guild.id, int(time_diff))}\n"
+                description=f"{status_message}\n"
                           f"{get_text('active_sessions_group', guild.id)} {role_name}\n\n"
                           f"✅ {get_text('session_ready', guild.id)}\n"
                           f"{' '.join(ready_mentions)}\n\n"
                           f"❌ {get_text('session_not_ready', guild.id)}\n"
                           f"{' '.join(not_ready_mentions)}",
-                color=discord.Color.gold()
+                color=color
             )
 
             # Actualizar el mensaje existente
             await message.edit(embed=embed)
             
+            # Si la sesión ha finalizado, eliminar las reacciones
+            if time_diff <= -150:
+                await message.clear_reactions()
+
         except discord.NotFound:
             logger.error(f"Mensaje no encontrado para la sesión {session['name']}")
         except discord.Forbidden:
