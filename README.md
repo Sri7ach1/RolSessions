@@ -35,7 +35,7 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - `/activesessions` - Muestra las sesiones activas
 - `/deletesession` - Elimina una sesión
 - `/editsession` - Edita una sesión existente
-- `/help` - Muestra la ayuda detallada
+- `!help` - Muestra la ayuda detallada
 - `/donate` - Información sobre donaciones
 
 ## 🎯 Características Destacadas
