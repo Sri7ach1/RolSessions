@@ -1,12 +1,19 @@
 # 🎲 RolSessions - Discord Session Manager
 
-[![License](https://img.shields.io/badge/license-Custom-red.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 [![Discord](https://img.shields.io/badge/Discord-Add%20Bot-7289DA.svg)](https://discord.com/oauth2/authorize?client_id=1313118498133905439)
 [![PayPal](https://img.shields.io/badge/PayPal-Donate-blue.svg)](https://paypal.me/i7ach1)
 
 ## 🌟 Características Principales
 
 Un mayordomo digital extraordinario para la gestión de sesiones de rol y eventos en Discord, dotado de capacidades multilingües y una precisión cronométrica digna de un relojero suizo.
+
+### ✨ Novedades
+- 📋 Selectores desplegables para roles y canales
+- 🎯 Interfaz mejorada paso a paso
+- 👥 Visualización clara de roles disponibles
+- 📢 Lista organizada de canales del servidor
+- 🔄 Sistema de edición más intuitivo
 
 - 🌍 **Soporte Multilingüe**: Español e Inglés, ¡tú eliges el idioma!
 - ⏰ **Gestión Temporal Avanzada**: Control preciso de zonas horarias
@@ -17,22 +24,19 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - 🔄 **Actualización Periódica**: Actualización automática de las tarjetas de sesión
 - 🔔 **Notificaciones**: Recordatorios automáticos antes de cada sesión
 
-## 🛠️ Comandos Disponibles
+## 🛠️ Comandos Slash Disponibles
 
 ### Configuración
-- `!configure timezone` - Configura la zona horaria del servidor
-- `!configure lang` - Establece el idioma del bot (es/en)
+- `/config timezone` - Configura la zona horaria del servidor
+- `/config lang` - Establece el idioma del bot (es/en)
 
 ### Gestión de Sesiones
-- `!newSession` - Crea una nueva sesión
-- `!activeSessions` - Muestra las sesiones activas
-- `!deleteSession` - Elimina una sesión
-- `!editSession` - Edita una sesión existente
-- `!forcereset` - Fuerza el reinicio de las sesiones (solo admin)
-
-### Otros
-- `!help` - Muestra la ayuda del bot
-- `!donate` - Información sobre donaciones
+- `/newsession` - Crea una nueva sesión
+- `/activesessions` - Muestra las sesiones activas
+- `/deletesession` - Elimina una sesión
+- `/editsession` - Edita una sesión existente
+- `/help` - Muestra la ayuda detallada
+- `/donate` - Información sobre donaciones
 
 ## 🎯 Características Destacadas
 
@@ -42,9 +46,9 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - 🔒 Integridad de datos garantizada
 - 📊 Gestión eficiente de sesiones múltiples
 
-### Sistema de Creación de Sesiones Mejorado
+### Sistema de Creación y Edición Mejorado
 - 📝 Interfaz guiada paso a paso
-- ✨ Soporte para menciones de canal (@canal)
+- 📋 Selectores desplegables para roles y canales
 - 🔍 Validación mejorada de entradas
 - 💡 Mensajes de ayuda contextuales
 
@@ -72,12 +76,22 @@ Un mayordomo digital extraordinario para la gestión de sesiones de rol y evento
 - 🔒 Mantenimiento de reacciones y estados
 - ⚡ Continuidad del servicio garantizada
 
+## ⚠️ Aviso Legal
+
+Este software es propietario y está protegido por derechos de autor. No se permite:
+- ❌ La modificación del código
+- ❌ La redistribución del código
+- ❌ El uso del código en otros proyectos
+- ❌ La creación de trabajos derivados
+
+Todos los derechos están reservados. El código fuente se muestra únicamente con fines de transparencia y auditoría.
+
 ## 🚀 Instalación
 
 1. Invita al bot a tu servidor usando [este enlace](https://discord.com/oauth2/authorize?client_id=1313118498133905439)
-2. Configura la zona horaria: `!configure timezone`
-3. Establece el idioma: `!configure lang`
-4. ¡Listo para crear tu primera sesión!
+2. Configura la zona horaria: `/config timezone`
+3. Establece el idioma: `/config lang`
+4. ¡Listo para crear tu primera sesión con `/newsession`!
 
 ## ⚙️ Configuración del Bot
 
@@ -95,9 +109,5 @@ Este proyecto está protegido bajo una licencia personalizada. Por favor, consul
 
 Si encuentras útil este bot, considera [hacer una donación](https://paypal.me/i7ach1) para mantener el proyecto activo.
 
-## 🤝 Contribuciones
-
-Este proyecto se distribuye bajo una licencia restringida. Aunque el código es visible para revisión, no se aceptan modificaciones o redistribuciones sin autorización expresa.
-
 ---
-Desarrollado con 💖 por Sri7ach1
+Desarrollado con 💖 por Sri7ach1 | Todos los derechos reservados
