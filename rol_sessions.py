@@ -1,4 +1,3 @@
-import json
 import os
 from datetime import datetime, timedelta
 import pytz
@@ -9,7 +8,6 @@ from discord.ui import Button, View, Select, Modal, TextInput
 from translations import TEXTS
 from config import TOKEN, PAYPAL_LINK, DEFAULT_ALERT_TIME, DEFAULT_TIMEZONE
 import logging
-import asyncio
 import sqlite3
 
 # Configuración de logging
