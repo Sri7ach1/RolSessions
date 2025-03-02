@@ -94,3 +94,97 @@ Si encuentras útil este bot, considera [hacer una donación](https://paypal.me/
 
 ---
 Desarrollado con 💖 por Sri7ach1 | Todos los derechos reservados
+
+---
+# 🌍 English Version
+
+## 🌟 Main Features
+
+A extraordinary digital butler for managing role-playing sessions and events on Discord, equipped with multilingual capabilities and Swiss-clock precision timing.
+
+### ✨ What's New in v2.0
+- ⏱️ Configurable duration system with automatic completion
+- 🎨 Visual session states:
+  - 🟡 Scheduled
+  - 🟠 Imminent
+  - 🔴 In Progress
+  - ⚫ Finished
+- 📊 Real-time progress bar and metrics
+- 🔄 Chained session creation
+- 📱 Optimized and more intuitive interface
+
+### 🌟 Core Features
+- 🌍 **Multilingual**: ES/EN
+- ⏰ **Time Management**: Timezones and durations
+- 📅 **Organization**: Creation and tracking
+- 👥 **Attendance**: Confirmation system
+- 🔄 **Persistence**: SQLite database
+- 🧹 **Auto-management**: Cleanup and maintenance
+
+## 🛠️ Slash Commands
+### Configuration
+- `/config timezone` - Timezone
+- `/config lang` - Language (es/en)
+
+### Management
+- `/newsession` - New session
+- `/activesessions` - View sessions
+- `/deletesession` - Delete session
+- `/editsession` - Edit session
+- `/help` - Help
+- `/donate` - Donations
+
+## 🎯 Main Systems
+
+### Database and Recovery
+- 💾 Persistent SQLite storage
+- 🔄 Automatic post-restart recovery
+- 🔒 Guaranteed integrity and consistency
+
+### Session Management
+- ⏱️ Advanced time control
+- 📊 Real-time metrics and states
+- 🏁 Smart completion and transition
+- 👥 Automated confirmations and notifications
+
+### Notification System
+- ⏰ Predictive alerts and reminders
+- 📊 Visual states and progress
+- 🔔 Configurable mentions and alerts
+- 🔄 Automatic updates
+
+## ⚠️ Legal Notice
+
+This software is proprietary and protected by copyright. Not allowed:
+- ❌ Code modification
+- ❌ Code redistribution
+- ❌ Use of code in other projects
+- ❌ Creation of derivative works
+
+All rights reserved. Source code is shown for transparency and audit purposes only.
+
+## 🚀 Installation
+
+1. Invite the bot to your server using [this link](https://discord.com/oauth2/authorize?client_id=1313118498133905439)
+2. Set the timezone: `/config timezone`
+3. Set the language: `/config lang`
+4. Ready to create your first session with `/newsession`!
+
+## ⚙️ Bot Configuration
+
+For optimal operation, make sure to configure:
+- Server timezone
+- Preferred language (es/en)
+- Appropriate channel permissions
+- Necessary access roles
+
+## 📜 License
+
+This project is protected under a custom license. Please check the [LICENSE](LICENSE) file for more details.
+
+## 💝 Support
+
+If you find this bot useful, consider [making a donation](https://paypal.me/i7ach1) to keep the project active.
+
+---
+Developed with 💖 by Sri7ach1 | All rights reserved
