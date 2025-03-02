@@ -8,73 +8,56 @@
 
 Un mayordomo digital extraordinario para la gestión de sesiones de rol y eventos en Discord, dotado de capacidades multilingües y una precisión cronométrica digna de un relojero suizo.
 
-### ✨ Novedades
-- 📋 Selectores desplegables para roles y canales
-- 🎯 Interfaz mejorada paso a paso
-- 👥 Visualización clara de roles disponibles
-- 📢 Lista organizada de canales del servidor
-- 🔄 Sistema de edición más intuitivo
+### ✨ Novedades v2.0
+- ⏱️ Sistema de duración configurable con finalización automática
+- 🎨 Estados visuales de sesión:
+  - 🟡 Programada
+  - 🟠 Inminente
+  - 🔴 En curso
+  - ⚫ Finalizada
+- 📊 Barra de progreso y métricas en tiempo real
+- 🔄 Creación de sesiones encadenadas
+- 📱 Interfaz optimizada y más intuitiva
 
-- 🌍 **Soporte Multilingüe**: Español e Inglés, ¡tú eliges el idioma!
-- ⏰ **Gestión Temporal Avanzada**: Control preciso de zonas horarias
-- 📅 **Organización de Sesiones**: Creación y seguimiento de eventos
-- 👥 **Sistema de Confirmación**: Gestión de asistencia mediante reacciones
-- 🔄 **Persistencia de Datos**: Sistema robusto de almacenamiento en SQLite
-- 🧹 **Auto-limpieza**: Eliminación automática de sesiones antiguas
-- 🔄 **Actualización Periódica**: Actualización automática de las tarjetas de sesión
-- 🔔 **Notificaciones**: Recordatorios automáticos antes de cada sesión
+### 🌟 Características Base
+- 🌍 **Multilingüe**: ES/EN
+- ⏰ **Gestión Temporal**: Zonas horarias y duraciones
+- 📅 **Organización**: Creación y seguimiento
+- 👥 **Asistencia**: Sistema de confirmaciones
+- 🔄 **Persistencia**: Base de datos SQLite
+- 🧹 **Auto-gestión**: Limpieza y mantenimiento
 
-## 🛠️ Comandos Slash Disponibles
-
+## 🛠️ Comandos Slash
 ### Configuración
-- `/config timezone` - Configura la zona horaria del servidor
-- `/config lang` - Establece el idioma del bot (es/en)
+- `/config timezone` - Zona horaria
+- `/config lang` - Idioma (es/en)
+
+### Gestión
+- `/newsession` - Nueva sesión
+- `/activesessions` - Ver sesiones
+- `/deletesession` - Eliminar sesión
+- `/editsession` - Editar sesión
+- `/help` - Ayuda
+- `/donate` - Donaciones
+
+## 🎯 Sistemas Principales
+
+### Base de Datos y Recuperación
+- 💾 Almacenamiento SQLite persistente
+- 🔄 Recuperación automática post-reinicio
+- 🔒 Integridad y consistencia garantizada
 
 ### Gestión de Sesiones
-- `/newsession` - Crea una nueva sesión
-- `/activesessions` - Muestra las sesiones activas
-- `/deletesession` - Elimina una sesión
-- `/editsession` - Edita una sesión existente
-- `!help` - Muestra la ayuda detallada
-- `/donate` - Información sobre donaciones
+- ⏱️ Control temporal avanzado
+- 📊 Métricas y estados en tiempo real
+- 🏁 Finalización y transición inteligente
+- 👥 Confirmaciones y notificaciones automatizadas
 
-## 🎯 Características Destacadas
-
-### Sistema de Base de Datos Robusto
-- 💾 Almacenamiento persistente en SQLite
-- 🔄 Recuperación automática tras reinicios
-- 🔒 Integridad de datos garantizada
-- 📊 Gestión eficiente de sesiones múltiples
-
-### Sistema de Creación y Edición Mejorado
-- 📝 Interfaz guiada paso a paso
-- 📋 Selectores desplegables para roles y canales
-- 🔍 Validación mejorada de entradas
-- 💡 Mensajes de ayuda contextuales
-
-### Sistema de Eliminación Visual
-- 🎯 Selección de sesión mediante reacciones
-- ✅ Confirmación en dos pasos
-- 🛡️ Protección contra eliminaciones accidentales
-- 📊 Vista previa de detalles antes de eliminar
-
-### Sistema de Notificaciones Inteligente
-- ⏰ Notificaciones automáticas una hora antes
-- 🔔 Menciones de grupo configurables
-- 📊 Estado de asistencia en tiempo real
-- 🔄 Actualización automática del tiempo restante
-
-### Sistema de Confirmación Mejorado
-- ✅ Confirmación exclusiva (no permite estar listo y no listo a la vez)
-- 🔄 Actualización en tiempo real de estados
-- 👥 Lista actualizada de participantes
-- ⚡ Respuesta inmediata a reacciones
-
-### Recuperación ante Reinicios
-- 💾 Persistencia de estados de sesión
-- 🔄 Recreación automática de mensajes
-- 🔒 Mantenimiento de reacciones y estados
-- ⚡ Continuidad del servicio garantizada
+### Sistema de Notificaciones
+- ⏰ Alertas predictivas y recordatorios
+- 📊 Estados y progreso visual
+- 🔔 Menciones y avisos configurables
+- 🔄 Actualización automática
 
 ## ⚠️ Aviso Legal
 
