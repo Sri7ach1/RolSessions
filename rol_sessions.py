@@ -10,7 +10,9 @@ from config import TOKEN, PAYPAL_LINK, DEFAULT_ALERT_TIME, DEFAULT_TIMEZONE
 import logging
 import sqlite3
 
-# Configuración de logging
+# ===================================================================
+# CONFIGURACIÓN DE LOGGING Y CONSTANTES
+# ===================================================================
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -28,7 +30,10 @@ intents.reactions = True
 intents.members = True
 
 bot = commands.Bot(command_prefix='!', intents=intents, description="Bot para gestión de sesiones y eventos")
-# Clases de UI
+
+# ===================================================================
+# CLASES DE INTERFAZ DE USUARIO (UI)
+# ===================================================================
 class ReadyView(View):
     def __init__(self, session_id, timeout=None):
         super().__init__(timeout=timeout)
@@ -449,6 +454,10 @@ class NewSessionModal(Modal, title="Crear Nueva Sesión"):
         except Exception as e:
             logger.error(f"Error en NewSessionModal.on_submit: {str(e)}")
             await interaction.followup.send(get_text('error_title', interaction.guild.id), ephemeral=True)
+
+# ===================================================================
+# GESTIÓN DE BASE DE DATOS Y SESIONES
+# ===================================================================
 class DatabaseManager:
     @staticmethod
     def setup_database():
@@ -602,6 +611,7 @@ class DatabaseManager:
 
         except Exception as e:
             logger.error(f"Error en recreate_session_messages: {str(e)}")
+
 class SessionManager:
     @staticmethod
     def setup_files():
@@ -709,6 +719,10 @@ class SessionManager:
         except Exception as e:
             logger.error(f"Error eliminando sesión: {str(e)}")
             return False
+
+# ===================================================================
+# FUNCIONES AUXILIARES Y UTILIDADES
+# ===================================================================
 # Funciones auxiliares
 def get_text(key, guild_id, *args):
    config = SessionManager.load_config(guild_id)
@@ -886,7 +900,10 @@ def create_progress_bar(minutes_left, total_minutes=60):
    
    bar = "🟩" * filled_length + "⬜" * (max_length - filled_length)
    return f"{bar} {int(progress * 100)}%"
-# Manejadores para interacciones
+
+# ===================================================================
+# FUNCIONES DE MANEJO DE SESIONES
+# ===================================================================
 async def handle_availability(interaction, session_id, status):
    try:
        # Cargar información de la sesión
@@ -953,6 +970,7 @@ async def handle_availability(interaction, session_id, status):
    except Exception as e:
        logger.error(f"Error en handle_availability: {str(e)}")
        await interaction.response.send_message(get_text('error_title', interaction.guild.id), ephemeral=True)
+
 async def show_delete_confirmation(interaction, session):
    session_id = session[0]  # session_id está en la primera posición
    
@@ -1006,6 +1024,7 @@ async def delete_session_confirmed(interaction, session_id):
    except Exception as e:
        logger.error(f"Error en delete_session_confirmed: {str(e)}")
        await interaction.response.send_message(get_text('error_title', interaction.guild.id), ephemeral=True)
+
 async def show_edit_options(interaction, session):
    embed = discord.Embed(
        title="✏️ Editar Sesión",
@@ -1103,6 +1122,7 @@ async def update_session_message(session_data):
     
     except Exception as e:
         logger.error(f"Error en update_session_message: {str(e)}")
+
 # Función para notificaciones
 async def send_session_notification(session, guild, channel, time_diff):
    try:
@@ -1124,7 +1144,10 @@ async def send_session_notification(session, guild, channel, time_diff):
    except Exception as e:
        logger.error(f"Error en send_session_notification: {str(e)}")
        return None
-# SLASH COMMANDS
+
+# ===================================================================
+# COMANDOS SLASH (APLICACIÓN)
+# ===================================================================
 @bot.tree.command(name="newsession", description="Crea una nueva sesión")
 async def new_session(interaction: discord.Interaction):
    modal = NewSessionModal()
@@ -1274,6 +1297,10 @@ async def help_command(interaction: discord.Interaction):
    embed.set_footer(text="Tip: Para confirmar asistencia, usa los botones ⭐ y ⛔ en los mensajes de sesión")
    
    await interaction.response.send_message(embed=embed)
+
+# ===================================================================
+# COMANDOS DE CONFIGURACIÓN
+# ===================================================================
 # Grupo de configuración
 config_group = app_commands.Group(name="config", description="Comandos de configuración del bot")
 bot.tree.add_command(config_group)
@@ -1319,172 +1346,15 @@ async def config_lang(interaction: discord.Interaction, language: str):
        color=discord.Color.green()
    )
    await interaction.response.send_message(embed=embed)
-# COMANDOS DE PREFIJO (COMPATIBILIDAD)
-@bot.command()
-async def newSession(ctx):
-   embed = discord.Embed(
-       title="Método Actualizado",
-       description="Ahora puedes usar el nuevo comando slash `/newsession`\n\n¿Quieres crear una sesión ahora?",
-       color=discord.Color.blue()
-   )
-   
-   view = discord.ui.View()
-   button = discord.ui.Button(label="Crear nueva sesión", style=discord.ButtonStyle.primary)
-   
-   async def button_callback(interaction):
-       modal = NewSessionModal()
-       await interaction.response.send_modal(modal)
-   
-   button.callback = button_callback
-   view.add_item(button)
-   
-   await ctx.send(embed=embed, view=view)
 
-@bot.command()
-async def activeSessions(ctx):
-   embed = discord.Embed(
-       title="Método Actualizado",
-       description="Para ver todas las sesiones usa el nuevo comando slash `/activesessions`",
-       color=discord.Color.blue()
-   )
-   
-   view = discord.ui.View()
-   button = discord.ui.Button(label="Ver sesiones activas", style=discord.ButtonStyle.primary)
-   
-   async def button_callback(interaction):
-       await active_sessions(interaction)
-   
-   button.callback = button_callback
-   view.add_item(button)
-   
-   await ctx.send(embed=embed, view=view)
-@bot.command()
-async def deleteSession(ctx):
-   embed = discord.Embed(
-       title="Método Actualizado",
-       description="Para eliminar sesiones usa el nuevo comando slash `/deletesession`",
-       color=discord.Color.blue()
-   )
-   
-   view = discord.ui.View()
-   button = discord.ui.Button(label="Eliminar sesión", style=discord.ButtonStyle.danger)
-   
-   async def button_callback(interaction):
-       await delete_session(interaction)
-   
-   button.callback = button_callback
-   view.add_item(button)
-   
-   await ctx.send(embed=embed, view=view)
-
-@bot.command()
-async def editSession(ctx):
-   embed = discord.Embed(
-       title="Método Actualizado",
-       description="Para editar sesiones usa el nuevo comando slash `/editsession`",
-       color=discord.Color.blue()
-   )
-   
-   view = discord.ui.View()
-   button = discord.ui.Button(label="Editar sesión", style=discord.ButtonStyle.primary)
-   
-   async def button_callback(interaction):
-       await edit_session(interaction)
-   
-   button.callback = button_callback
-   view.add_item(button)
-   
-   await ctx.send(embed=embed, view=view)
-
-@bot.command()
-async def donate(ctx):
-   try:
-       await ctx.author.send(get_text('donate_dm', ctx.guild.id, PAYPAL_LINK))
-       await ctx.send(get_text('donate_response', ctx.guild.id))
-   except discord.Forbidden:
-       await ctx.send(get_text('donate_error', ctx.guild.id))
-@bot.group(invoke_without_command=True)
-async def configure(ctx):
-    embed = discord.Embed(
-        title="Método Actualizado",
-        description="Para la configuración usa los nuevos comandos slash:\n\n`/config timezone` - Configura la zona horaria\n`/config lang` - Configura el idioma",
-        color=discord.Color.blue()
-    )
-    
-    view = discord.ui.View()
-    timezone_button = discord.ui.Button(label="Configurar zona horaria", style=discord.ButtonStyle.primary, row=0)
-    lang_button = discord.ui.Button(label="Configurar idioma", style=discord.ButtonStyle.primary, row=0)
-    
-    async def timezone_callback(interaction):
-        # Modal de zona horaria
-        class TimezoneModal(Modal, title="Configurar Zona Horaria"):
-            def __init__(self):
-                super().__init__()
-                self.timezone_input = TextInput(
-                    label="Zona horaria",
-                    placeholder="Ej: Europe/Madrid, America/New_York",
-                    required=True
-                )
-                self.add_item(self.timezone_input)
-            
-            async def on_submit(self, interaction):
-                await config_timezone(interaction, self.timezone_input.value)
-        
-        await interaction.response.send_modal(TimezoneModal())
-    
-    async def lang_callback(interaction):
-        embed = discord.Embed(
-            title=get_text('lang_title', interaction.guild.id),
-            description=get_text('lang_desc', interaction.guild.id),
-            color=discord.Color.blue()
-        )
-        
-        lang_view = discord.ui.View()
-        es_button = discord.ui.Button(label="Español", style=discord.ButtonStyle.primary, row=0)
-        en_button = discord.ui.Button(label="English", style=discord.ButtonStyle.primary, row=0)
-        
-        async def es_callback(interaction):
-            await config_lang(interaction, "es")
-        
-        async def en_callback(interaction):
-            await config_lang(interaction, "en")
-        
-        es_button.callback = es_callback
-        en_button.callback = en_callback
-        
-        lang_view.add_item(es_button)
-        lang_view.add_item(en_button)
-        
-        await interaction.response.send_message(embed=embed, view=lang_view, ephemeral=True)
-    
-    # Asignar callbacks a los botones
-    timezone_button.callback = timezone_callback
-    lang_button.callback = lang_callback
-    
-    # Añadir botones a la vista
-    view.add_item(timezone_button)
-    view.add_item(lang_button)
-    
-    await ctx.send(embed=embed, view=view)
-
-@configure.command()
-async def timezone(ctx):
-   embed = discord.Embed(
-       title="Método Actualizado",
-       description="Para configurar la zona horaria usa el nuevo comando slash `/config timezone`",
-       color=discord.Color.blue()
-   )
-   await ctx.send(embed=embed)
-
-@configure.command()
-async def lang(ctx):
-   embed = discord.Embed(
-       title="Método Actualizado",
-       description="Para configurar el idioma usa el nuevo comando slash `/config lang`",
-       color=discord.Color.blue()
-   )
-   await ctx.send(embed=embed)
+# ===================================================================
+# TAREAS PROGRAMADAS Y EVENTOS
+# ===================================================================
 # Tarea programada para gestionar sesiones
+# Esta tarea se ejecuta cada minuto y realiza las siguientes funciones:
+# 1. Limpia sesiones antiguas automáticamente
+# 2. Verifica las sesiones próximas y envía notificaciones
+# 3. Actualiza los mensajes de sesiones existentes
 @tasks.loop(minutes=1)
 async def manage_sessions():
    try:
@@ -1523,6 +1393,13 @@ async def manage_sessions():
 
    except Exception as e:
        logger.error(f"Error en manage_sessions: {str(e)}")
+
+# Evento que se ejecuta cuando el bot está listo y conectado
+# Realiza las siguientes acciones:
+# 1. Configura archivos y base de datos
+# 2. Recrea los mensajes de sesiones existentes
+# 3. Inicia la tarea programada de gestión de sesiones
+# 4. Sincroniza los comandos slash con Discord
 @bot.event
 async def on_ready():
    logger.info(f'Bot conectado como {bot.user.name}')
