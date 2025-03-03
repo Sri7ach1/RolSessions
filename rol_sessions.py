@@ -222,10 +222,17 @@ class DateTimeModal(Modal, title="Editar Fecha y Hora"):
     async def on_submit(self, interaction: discord.Interaction):
         try:
             new_datetime = datetime.strptime(self.datetime_input.value, "%d-%m-%Y %H:%M")
-            session_data = convert_db_to_session(self.session)
-            session_data['datetime'] = new_datetime.strftime("%d-%m-%Y %H:%M")
             
-            if SessionManager.save_session(session_data):
+            # Obtener el ID de la sesión para cargar los datos actuales
+            session_id = self.session[0]
+            
+            # Crear un objeto con solo el campo que queremos actualizar
+            update_data = {
+                'session_id': session_id,
+                'datetime': new_datetime.strftime("%d-%m-%Y %H:%M")
+            }
+            
+            if SessionManager.save_session(update_data):
                 embed = discord.Embed(
                     title=get_text('success_title', interaction.guild.id),
                     description=f"La fecha y hora se han actualizado a: {new_datetime.strftime('%d-%m-%Y %H:%M')}",
@@ -233,8 +240,17 @@ class DateTimeModal(Modal, title="Editar Fecha y Hora"):
                 )
                 await interaction.response.send_message(embed=embed, ephemeral=True)
                 
-                # Actualizar el mensaje de la sesión si existe
-                await update_session_message(session_data)
+                # Cargar la sesión actualizada para actualizar el mensaje
+                conn = sqlite3.connect(DB_FILE)
+                c = conn.cursor()
+                c.execute('SELECT * FROM sessions WHERE session_id = ?', (session_id,))
+                updated_session = c.fetchone()
+                conn.close()
+                
+                if updated_session:
+                    session_data = convert_db_to_session(updated_session)
+                    # Actualizar el mensaje de la sesión si existe
+                    await update_session_message(session_data)
             else:
                 await interaction.response.send_message(get_text('error_title', interaction.guild.id), ephemeral=True)
         except ValueError:
@@ -269,10 +285,16 @@ class DurationModal(Modal, title="Editar Duración"):
                 await interaction.response.send_message(get_text('prevtime_error', interaction.guild.id), ephemeral=True)
                 return
             
-            session_data = convert_db_to_session(self.session)
-            session_data['duration'] = new_duration
+            # Obtener el ID de la sesión para cargar los datos actuales
+            session_id = self.session[0]
             
-            if SessionManager.save_session(session_data):
+            # Crear un objeto con solo el campo que queremos actualizar
+            update_data = {
+                'session_id': session_id,
+                'duration': new_duration
+            }
+            
+            if SessionManager.save_session(update_data):
                 embed = discord.Embed(
                     title=get_text('success_title', interaction.guild.id),
                     description=f"La duración se ha actualizado a: {format_duration(new_duration)}",
@@ -280,8 +302,17 @@ class DurationModal(Modal, title="Editar Duración"):
                 )
                 await interaction.response.send_message(embed=embed, ephemeral=True)
                 
-                # Actualizar el mensaje de la sesión si existe
-                await update_session_message(session_data)
+                # Cargar la sesión actualizada para actualizar el mensaje
+                conn = sqlite3.connect(DB_FILE)
+                c = conn.cursor()
+                c.execute('SELECT * FROM sessions WHERE session_id = ?', (session_id,))
+                updated_session = c.fetchone()
+                conn.close()
+                
+                if updated_session:
+                    session_data = convert_db_to_session(updated_session)
+                    # Actualizar el mensaje de la sesión si existe
+                    await update_session_message(session_data)
             else:
                 await interaction.response.send_message(get_text('error_title', interaction.guild.id), ephemeral=True)
         except Exception as e:
@@ -660,7 +691,28 @@ class SessionManager:
         try:
             conn = sqlite3.connect(DB_FILE)
             c = conn.cursor()
-            session_id = f"{session_data['guild_id']}_{session_data['name'].lower().replace(' ', '_')}"
+            
+            # Verificar si tenemos un session_id explícito o necesitamos generarlo
+            if 'session_id' in session_data:
+                session_id = session_data['session_id']
+            else:
+                session_id = f"{session_data['guild_id']}_{session_data['name'].lower().replace(' ', '_')}"
+            
+            # Primero verificar si la sesión ya existe para preservar datos
+            c.execute('SELECT * FROM sessions WHERE session_id = ?', (session_id,))
+            existing_session = c.fetchone()
+            
+            if existing_session:
+                # Si estamos actualizando una sesión existente, primero obtenemos todos los datos actuales
+                existing_data = convert_db_to_session(existing_session)
+                
+                # Actualizamos solo los campos que vienen en session_data
+                for key in session_data:
+                    if key in existing_data and key != 'session_id':
+                        existing_data[key] = session_data[key]
+                
+                # Usamos los datos combinados
+                session_data = existing_data
             
             c.execute('''
                 INSERT OR REPLACE INTO sessions 
